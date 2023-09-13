@@ -25,14 +25,24 @@ namespace MacroRecoderCsScript
 					Usage();
 				}
 
-				Regex scriptArgPattern = new Regex( "-script=(?<scriptPath>.+)" );
-				Match argsChacker = scriptArgPattern.Match( e.Args[ 0 ] );
+				Regex scriptArgPattern = new Regex( "-script=(?<scriptPath>.+) -loop=(?<execLoops>.+)" );
+				Match argsChecker = scriptArgPattern.Match( e.Args[ 0 ] );
 
-				if( argsChacker.Success ) {
-					string filePath = argsChacker.Groups[ "scriptPath" ].Value;
+				if( argsChecker.Success ) {
+					string filePath = argsChecker.Groups[ "scriptPath" ].Value;
+					int loops;
+					try
+					{
+						loops = int.Parse(argsChecker.Groups["execLoops"].Value);
+					}
+					catch(Exception)
+					{
+						CommonUtil.WriteToConsole("No valid loop parameter specified, script will only be executed once.");
+						loops = 0;
+					}
 					if( File.Exists( filePath ) ){
 						AppEnvironment.GetInstance().DpiSetting();
-						await ScriptExecuter.ExecuteAsync( filePath );
+						await ScriptExecuter.ExecuteAsync( filePath, loops );
 					}
 					else {
 						CommonUtil.WriteToConsole( "[File Error]" + Environment.NewLine + "'" + filePath + "' is not found." );

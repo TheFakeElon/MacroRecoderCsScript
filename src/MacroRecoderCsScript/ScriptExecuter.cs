@@ -7,7 +7,7 @@ namespace MacroRecoderCsScript
 {
 	static class ScriptExecuter
 	{
-		public static async Task ExecuteAsync( string scriptPath )
+		public static async Task ExecuteAsync( string scriptPath, int loops )
 		{
 			using( var hook = new UserInputHook() ) {
 				HookSetting( hook );

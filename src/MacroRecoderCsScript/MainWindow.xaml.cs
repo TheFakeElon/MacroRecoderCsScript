@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Input;
+using System.Linq;
 
 namespace MacroRecoderCsScript
 {
@@ -16,5 +18,9 @@ namespace MacroRecoderCsScript
 			AppEnvironment.GetInstance().DpiSetting();
 			userModel.WinDispacher = Application.Current.Dispatcher;
 		}
-	}
+        private void TextNumberValidation(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = e.Text.All(x => !char.IsDigit(x));
+        }
+    }
 }

@@ -7,6 +7,8 @@ using System.ComponentModel;
 using Microsoft.Win32;
 using System.Windows.Input;
 using Microsoft.CodeAnalysis.Scripting;
+using System.Windows.Controls;
+using System.Linq;
 
 namespace MacroRecoderCsScript
 {
@@ -14,9 +16,12 @@ namespace MacroRecoderCsScript
 	{
 		private ButtonState buttonState;
 		private ScriptRecorder recorder;
+		private int loopCount;
 		private string scriptPath;
 		private string errorMessage;
 
+		
+		private static readonly PropertyChangedEventArgs loopCountChangedEventArgs = new PropertyChangedEventArgs( nameof( LoopCount ) );
 		private static readonly PropertyChangedEventArgs scriptPathChangedEventArgs = new PropertyChangedEventArgs( nameof( ScriptPath ) );
 		private static readonly PropertyChangedEventArgs errorMessageChangedEventArgs = new PropertyChangedEventArgs( nameof( ErrorMessage ) );
 
@@ -30,6 +35,16 @@ namespace MacroRecoderCsScript
 
 		public Dispatcher WinDispacher { get; set; }
 
+		public string LoopCount
+		{
+			get { return loopCount.ToString(); }
+			set
+			{
+				if(!int.TryParse(value, out int num) || loopCount == num) return;
+				loopCount = Math.Max(num, -1);
+				PropertyChanged?.Invoke( this, loopCountChangedEventArgs );
+            }
+		}
 		public string ScriptPath
 		{
 			get { return scriptPath; }
@@ -105,7 +120,7 @@ namespace MacroRecoderCsScript
 				AppEnvironment.GetInstance().CancelToken = cancelTokenSrc.Token;
 
 				WinDispacher?.Invoke( new Action( CommandManager.InvalidateRequerySuggested ) );
-				await ScriptExecuter.ExecuteAsync( ScriptPath );
+				await ScriptExecuter.ExecuteAsync( ScriptPath, loopCount );
 			}
 			catch( CompilationErrorException ex ) {
 				ErrorMessage = "[Compile Error]" + Environment.NewLine + ex.Message;

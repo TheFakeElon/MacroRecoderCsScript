@@ -23,15 +23,24 @@
                 Command="{Binding StopCommand}" />
 
         <Button x:Name="browseButton" Content="Browse"
-                HorizontalAlignment="Left" Margin="268,40,0,0"
+                HorizontalAlignment="Left" Margin="268,69,0,0"
                 VerticalAlignment="Top" Width="75"
                 Command="{Binding BrowseCommand}" />
 
+        <TextBox x:Name="repeatBox" HorizontalAlignment="Left"
+                 Margin="90,40,0,0" VerticalAlignment="Top"
+                 Width="45" PreviewTextInput="TextNumberValidation"
+                 Text="{Binding LoopCount}" />
+        <TextBlock x:Name="repeatBoxText" HorizontalAlignment="Left"
+                   Margin="19,40,0,0" TextWrapping="Wrap" Text="Loop Count" VerticalAlignment="Top" Width="66" Height="19"/>
+        <TextBlock x:Name="repeatBoxTextInfo" HorizontalAlignment="Left"
+                   Margin="144,40,0,0" TextWrapping="Wrap" Text="[ Set to -1 for infinite ]" VerticalAlignment="Top" Width="124" Height="19" Foreground="#FF3A3A3A"/>
+
         <TextBox x:Name="scriptPath" HorizontalAlignment="Left"
-                 Margin="90,40,0,0" TextWrapping="NoWrap" Width="173" VerticalAlignment="Top" Height="19" Text="{Binding ScriptPath}"/>
+                 Margin="90,70,0,0" TextWrapping="NoWrap" Width="173" VerticalAlignment="Top" Height="19" Text="{Binding ScriptPath}"/>
         <TextBlock x:Name="scriptPathText" HorizontalAlignment="Left"
-                   Margin="19,40,0,0" TextWrapping="Wrap" Text="Script Path" VerticalAlignment="Top" Width="66" Height="19"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="177" Margin="10,75,0,0" TextWrapping="Wrap"
+                   Margin="19,70,0,0" TextWrapping="Wrap" Text="Script Path" VerticalAlignment="Top" Width="66" Height="19"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="155" Margin="10,100,0,0" TextWrapping="Wrap"
                  Text="{Binding ErrorMessage}" VerticalAlignment="Top" Width="380" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>
