@@ -6,6 +6,8 @@ namespace MacroRecoderCsScript
 {
 	class ScriptRecorder
 	{
+		private MainWindowViewModel mainWindow;
+
 		private StringBuilder recordScript;
 		private Stopwatch delayWatch;
 		private UserInputHook hook;
@@ -36,8 +38,9 @@ namespace MacroRecoderCsScript
 			get { return recordScript.ToString(); }
 		}
 
-		public ScriptRecorder()
+		public ScriptRecorder(MainWindowViewModel mainWindow)
 		{
+			this.mainWindow = mainWindow;
 			delayWatch = new Stopwatch();
 
 			hook = new UserInputHook
@@ -69,7 +72,11 @@ namespace MacroRecoderCsScript
 		{
 			recordScript.Append( $"await Delay({delayWatch.ElapsedMilliseconds});\r\n" );
 			delayWatch.Restart();
-
+			if (keyHookStr.virtualKey == MacroConfig.virtualToggleRecord && (KeyHookEvent)keyEvent == KeyHookEvent.KeyDown)
+			{
+				mainWindow.StopCommand.Execute(this);
+				return;
+			}
 			recordScript.Append( ToKeyMacroFormat( keyHookStr, ( KeyHookEvent ) keyEvent ) );
 		}
 

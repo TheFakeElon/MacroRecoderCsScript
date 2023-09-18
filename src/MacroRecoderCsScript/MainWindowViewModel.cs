@@ -43,7 +43,7 @@ namespace MacroRecoderCsScript
 				if(!int.TryParse(value, out int num) || loopCount == num) return;
 				loopCount = Math.Max(num, -1);
 				PropertyChanged?.Invoke( this, loopCountChangedEventArgs );
-            }
+			}
 		}
 		public string ScriptPath
 		{
@@ -74,7 +74,7 @@ namespace MacroRecoderCsScript
 		public MainWindowViewModel()
 		{
 			buttonState = new ButtonState();
-			recorder = new ScriptRecorder();
+			recorder = new ScriptRecorder(this);
 
 			RecordCommand = new DelegateCommand( RecordCmd_Execute, RecordCmd_CanExecute );
 			StopCommand = new DelegateCommand( StopCmd_Execute, StopCmd_CanExecute );
